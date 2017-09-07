@@ -1,13 +1,14 @@
 var correct = 0;
 var incorrect = 0;
-var questions = ["Question 1", "Question 2", "Question 3", "Question 4", "Question 5"];
-var answers = ["q1", "q2", "q3", "q4", "q5"];
-var optionA = ["Answer A1", "Answer A2", "Answer A3", "Answer A4", "Answer A5"];
-var optionB = ["Answer B1", "Answer B2", "Answer B3", "Answer B4", "Answer B5"];
-var optionC = ["Answer C1", "Answer C2", "Answer C3", "Answer C4", "Answer C5"];
-var unanswered = questions.length;
+var items = ["infinityedge.png", "deathcap.png", "sunfire.png", "frozenheart.png", "frozenfist.png", "triforce.png", "frozenmallet.png"];
+var answers = ["q1", "q2", "q3", "q4", "q5", "q6", "q7"];
+var optionA = ["Excalibur", "Rabadon's Deathcap", "Veil of Discord", "Frozen Staff", "Thousand Years of Pain", "Delta Sword", "Frozen Mallet"];
+var optionB = ["Yellow Sword Thingy", "Wooglet's Witchcap", "Invisibility Cloak", "Frozen Heart", "Iceborn Gauntlet", "Guardian Angel", "Mjolnir"];
+var optionC = ["Infinity Edge", "Sorting Hat", "Sunfire Cape", "Rylai's Crystal Scepter", "Wolverine Fist", "Ethereal Blade", "Guardian's Hammer"];
+var optionD = ["Zeal", "Hood of Defiance", "Phoenix Armor", "Glacial Shroud", "Frozen Fist", "Trinity Force", "Hammer of Justice"];
+var unanswered = items.length;
 var userAnswer = [];
-var check = ["A", "B", "C", "B", "A"];
+var check = ["C", "A", "C", "B", "B", "D", "A"];
 
 $("#done").hide();
 
@@ -15,7 +16,7 @@ $("#start").on("click", function() {
   $("#start").hide();
   $("#done").show();
   $("#timer").html("<h2>Time Remaining: 30 seconds</h2>")
-  var number = 15;
+  var number = 30;
   var intervalId;
 
   function run() {
@@ -59,34 +60,30 @@ function getScore() {
         incorrect++;
         unanswered--;
       }
-    }    
+    }
   }
 }
 
 function getAnswers() {
-  userAnswer.push($('input[name=q1]:checked', '.questions').val());
-  userAnswer.push($('input[name=q2]:checked', '.questions').val());
-  userAnswer.push($('input[name=q3]:checked', '.questions').val());
-  userAnswer.push($('input[name=q4]:checked', '.questions').val());
-  userAnswer.push($('input[name=q5]:checked', '.questions').val());
-  console.log(userAnswer);
+  for (var i = 1; i <= items.length; i++) {
+    userAnswer.push($("input[name=q" + i + "]:checked", ".questions").val());
+  }
 }
 
 function result() {
   $("#timer").empty();
   $(".questions").empty();
   $("#done").hide();
-  $("#main").append("<h3>All Done!</h3>");
-  $("#main").append("<br>Correct Answers: " + correct);
-  $("#main").append("<br>Incorrect Answers: " + incorrect);
-  $("#main").append("<br>Unanswered: " + unanswered);
+  $("#main").append("<h2><b>All Done!</b></h2><br>");
+  $("#main").append("<p id='right'>Correct Answers: " + correct + "</p>");
+  $("#main").append("<p id='wrong'>Incorrect Answers: " + incorrect + "</p>");
+  $("#main").append("<p id='blank'>Unanswered: " + unanswered + "</p>");
 }
 
 function printForm() {
-  for (var i = 0; i < questions.length; i++) {
-    var ask = $("<h3>");
-    ask.append(questions[i]);
-    ask.append("<br>");
+  for (var i = 0; i < items.length; i++) {
+    var image = $("<img>");
+    image.attr("src", "assets/images/" + items[i]);
     var choiceA = $("<label>");
     var inputA = $("<input>");
     inputA.attr("type", "radio");
@@ -102,15 +99,25 @@ function printForm() {
     inputC.attr("type", "radio");
     inputC.attr("name", answers[i]);
     inputC.attr("value", "C");
+    var choiceD = $("<label>");
+    var inputD = $("<input>");
+    inputD.attr("type", "radio");
+    inputD.attr("name", answers[i]);
+    inputD.attr("value", "D");
     choiceA.append(inputA);
     choiceB.append(inputB);
     choiceC.append(inputC);
+    choiceD.append(inputD);
     choiceA.append(optionA[i]);
     choiceB.append(optionB[i]);
     choiceC.append(optionC[i]);
-    $(".questions").append(ask);
+    choiceD.append(optionD[i]);
+    $(".questions").append(image);
+    $(".questions").append("<br><br>");
     $(".questions").append(choiceA);
     $(".questions").append(choiceB);
-    $(".questions").append(choiceC);  
+    $(".questions").append(choiceC);
+    $(".questions").append(choiceD);
+    $(".questions").append("<br><br>"); 
   }
 }
